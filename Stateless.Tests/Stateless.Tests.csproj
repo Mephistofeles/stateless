@@ -87,12 +87,6 @@
     <Compile Include="DotGraphFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stateless\Stateless.csproj">
-      <Project>{A15EEC02-60EC-4705-A58B-A6ECD55A9628}</Project>
-      <Name>Stateless</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Stateless.Tests.snk" />
   </ItemGroup>
   <ItemGroup>
