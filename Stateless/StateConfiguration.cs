@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Stateless
@@ -64,7 +65,7 @@ namespace Stateless
                     trigger,
                     destinationState,
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -101,7 +102,7 @@ namespace Stateless
                     trigger,
                     _representation.UnderlyingState,
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
             /// <summary>
             /// Ignore the specified trigger when in the configured state.
@@ -129,7 +130,7 @@ namespace Stateless
                     new IgnoredTriggerBehaviour(
                         trigger,
                         guard,
-                        guardDescription != null ? guardDescription : guard?.Method.Name));
+                        guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name));
                 return this;
             }
 
@@ -145,7 +146,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(entryAction, nameof(entryAction));
                 return OnEntry(
                     t => entryAction(),
-                    entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -160,7 +161,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(entryAction, nameof(entryAction));
                 _representation.AddEntryAction(
                     (t, args) => entryAction(t),
-                    entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -178,7 +179,7 @@ namespace Stateless
                 return OnEntryFrom(
                     trigger,
                     t => entryAction(),
-                    entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -195,7 +196,7 @@ namespace Stateless
                 _representation.AddEntryAction(
                     trigger,
                     (t, args) => entryAction(t),
-                    entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -214,7 +215,7 @@ namespace Stateless
                 return OnEntryFrom<TArg0>(
                     trigger,
                     (a0, t) => entryAction(a0),
-                    entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -234,7 +235,7 @@ namespace Stateless
                     trigger.Trigger,
                     (t, args) => entryAction(
                         ParameterConversion.Unpack<TArg0>(args, 0), t),
-                        entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                        entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -253,7 +254,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(entryAction, nameof(entryAction));
                 return OnEntryFrom<TArg0, TArg1>(
                     trigger, 
-                    (a0, a1, t) => entryAction(a0, a1), entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    (a0, a1, t) => entryAction(a0, a1), entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -272,7 +273,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(trigger, nameof(trigger));
                 _representation.AddEntryAction(trigger.Trigger, (t, args) => entryAction(
                     ParameterConversion.Unpack<TArg0>(args, 0),
-                    ParameterConversion.Unpack<TArg1>(args, 1), t), entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    ParameterConversion.Unpack<TArg1>(args, 1), t), entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -292,7 +293,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(entryAction, nameof(entryAction));
                 return OnEntryFrom<TArg0, TArg1, TArg2>(
                     trigger, 
-                    (a0, a1, a2, t) => entryAction(a0, a1, a2), entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    (a0, a1, a2, t) => entryAction(a0, a1, a2), entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -313,7 +314,7 @@ namespace Stateless
                 _representation.AddEntryAction(trigger.Trigger, (t, args) => entryAction(
                     ParameterConversion.Unpack<TArg0>(args, 0),
                     ParameterConversion.Unpack<TArg1>(args, 1),
-                    ParameterConversion.Unpack<TArg2>(args, 2), t), entryActionDescription != null ? entryActionDescription : entryAction.Method.Name);
+                    ParameterConversion.Unpack<TArg2>(args, 2), t), entryActionDescription != null ? entryActionDescription : entryAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -329,7 +330,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(exitAction, nameof(exitAction));
                 return OnExit(
                     t => exitAction(),
-                    exitActionDescription != null ? exitActionDescription : exitAction.Method.Name);
+                    exitActionDescription != null ? exitActionDescription : exitAction.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -344,7 +345,7 @@ namespace Stateless
                 Enforce.ArgumentNotNull(exitAction, nameof(exitAction));
                 _representation.AddExitAction(
                     exitAction,
-                    exitActionDescription != null ? exitActionDescription : exitAction.Method.Name);
+                    exitActionDescription != null ? exitActionDescription : exitAction.GetMethodInfo().Name);
                 return this;
             }
 
@@ -445,7 +446,7 @@ namespace Stateless
                     trigger, 
                     args => destinationStateSelector(), 
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -469,7 +470,7 @@ namespace Stateless
                     args => destinationStateSelector(
                         ParameterConversion.Unpack<TArg0>(args, 0)),
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -495,7 +496,7 @@ namespace Stateless
                         ParameterConversion.Unpack<TArg0>(args, 0),
                         ParameterConversion.Unpack<TArg1>(args, 1)),
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
 
             /// <summary>
@@ -523,7 +524,7 @@ namespace Stateless
                         ParameterConversion.Unpack<TArg1>(args, 1),
                         ParameterConversion.Unpack<TArg2>(args, 2)),
                     guard,
-                    guardDescription != null ? guardDescription : guard?.Method.Name);
+                    guardDescription != null ? guardDescription : guard?.GetMethodInfo().Name);
             }
 
             void EnforceNotIdentityTransition(TState destination)

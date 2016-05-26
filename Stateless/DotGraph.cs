@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Stateless
 {
@@ -33,7 +34,7 @@ namespace Stateless
                             unknownDestinations.Add(destination);
                         }
 
-                        string line = (behaviour.Guard.Method.DeclaringType.Namespace.Equals("Stateless")) ?
+                        string line = (behaviour.Guard.GetMethodInfo().DeclaringType.Namespace.Equals("Stateless")) ?
                             string.Format(" {0} -> {1} [label=\"{2}\"];", source, destination, behaviour.Trigger) :
                             string.Format(" {0} -> {1} [label=\"{2} [{3}]\"];", source, destination, behaviour.Trigger, behaviour.GuardDescription);
 
