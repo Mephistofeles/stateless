@@ -1,5 +1,9 @@
 ﻿{
   "version": "3.0.0-*",
+  "buildOptions": {
+    "keyFile": "Stateless.snk",
+    "warningsAsErrors": true
+  },
   "packOptions": {
     "iconUrl": "https://raw.githubusercontent.com/Mephistofeles/stateless/master/logo.png",
     "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
@@ -21,6 +25,6 @@
   },
 
   "frameworks": {
-    "netstandard1.0": {}
+    "netstandard1.0": { }
   }
 }

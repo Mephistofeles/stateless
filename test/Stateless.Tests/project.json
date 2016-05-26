@@ -1,7 +1,9 @@
 ﻿{
   "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true
+    "emitEntryPoint": true,
+    "keyFile": "Stateless.Tests.snk",
+    "warningsAsErrors": true
   },
 
   "dependencies": {
