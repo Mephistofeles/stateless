@@ -2,38 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Xunit;
 
 namespace Stateless.Tests
 {
-    [TestFixture]
     public class TriggerBehaviourFixture
     {
-        [Test]
+        [Fact]
         public void ExposesCorrectUnderlyingTrigger()
         {
             var transtioning = new StateMachine<State, Trigger>.TransitioningTriggerBehaviour(
                 Trigger.X, State.C, () => true);
 
-            Assert.AreEqual(Trigger.X, transtioning.Trigger);
+            Assert.Equal(Trigger.X, transtioning.Trigger);
         }
 
-        [Test]
+        [Fact]
         public void WhenGuardConditionFalse_IsGuardConditionMetIsFalse()
         {
             var transtioning = new StateMachine<State, Trigger>.TransitioningTriggerBehaviour(
                 Trigger.X, State.C, () => false);
 
-            Assert.IsFalse(transtioning.IsGuardConditionMet);
+            Assert.False(transtioning.IsGuardConditionMet);
         }
 
-        [Test]
+        [Fact]
         public void WhenGuardConditionTrue_IsGuardConditionMetIsTrue()
         {
             var transtioning = new StateMachine<State, Trigger>.TransitioningTriggerBehaviour(
                 Trigger.X, State.C, () => true);
 
-            Assert.IsTrue(transtioning.IsGuardConditionMet);
+            Assert.True(transtioning.IsGuardConditionMet);
         }
     }
 }

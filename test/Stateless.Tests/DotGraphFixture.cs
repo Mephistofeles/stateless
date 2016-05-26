@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Reflection;
-using NUnit.Framework;
+using Xunit;
 
 namespace Stateless.Tests
 {
-    [TestFixture]
     public class DotGraphFixture
     {
         bool IsTrue() 
@@ -22,7 +21,7 @@ namespace Stateless.Tests
 
         }
 
-        [Test]
+        [Fact]
         public void SimpleTransition()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -34,10 +33,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .Permit(Trigger.X, State.B);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void TwoSimpleTransitions()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -51,10 +50,10 @@ namespace Stateless.Tests
                 .Permit(Trigger.X, State.B)
                 .Permit(Trigger.Y, State.C);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void WhenDiscriminatedByAnonymousGuard()
         {
             Func<bool> anonymousGuard = () => true;
@@ -68,10 +67,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitIf(Trigger.X, State.B, anonymousGuard);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void WhenDiscriminatedByAnonymousGuardWithDescription()
         {
             Func<bool> anonymousGuard = () => true;
@@ -85,10 +84,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitIf(Trigger.X, State.B, anonymousGuard, "description");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void WhenDiscriminatedByNamedDelegate()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -100,10 +99,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitIf(Trigger.X, State.B, IsTrue);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void WhenDiscriminatedByNamedDelegateWithDescription()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -115,10 +114,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitIf(Trigger.X, State.B, IsTrue, "description");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void DestinationStateIsDynamic()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -130,10 +129,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitDynamic(Trigger.X, () => State.B);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void DestinationStateIsCalculatedBasedOnTriggerParameters()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -146,10 +145,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .PermitDynamic(trigger, i => i == 1 ? State.B : State.C);
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void OnEntryWithAnonymousActionAndDescription()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -162,10 +161,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .OnEntry(() => { }, "enteredA");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void OnEntryWithNamedDelegateActionAndDescription()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -178,10 +177,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .OnEntry(OnEntry, "enteredA");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void OnExitWithAnonymousActionAndDescription()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -194,10 +193,10 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .OnExit(() => { }, "exitA");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
 
-        [Test]
+        [Fact]
         public void OnExitWithNamedDelegateActionAndDescription()
         {
             var expected = "digraph {" + System.Environment.NewLine
@@ -210,7 +209,7 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .OnExit(OnExit, "exitA");
 
-            Assert.AreEqual(expected, sm.ToDotGraph());
+            Assert.Equal(expected, sm.ToDotGraph());
         }
     }
 }
