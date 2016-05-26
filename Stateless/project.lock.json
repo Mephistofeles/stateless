@@ -114,9 +114,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Linq.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.5/System.Linq.dll": {}
         }
       },
       "System.Net.Primitives/4.0.11-rc2-24027": {
@@ -135,9 +132,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.ObjectModel.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/System.ObjectModel.dll": {}
         }
       },
       "System.Reflection/4.1.0-rc2-24027": {
@@ -222,9 +216,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Text.RegularExpressions.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/System.Text.RegularExpressions.dll": {}
         }
       },
       "System.Threading/4.0.11-rc2-24027": {
@@ -235,9 +226,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Threading.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/System.Threading.dll": {}
         }
       },
       "System.Threading.Tasks/4.0.11-rc2-24027": {
@@ -259,9 +247,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Xml.ReaderWriter.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/System.Xml.ReaderWriter.dll": {}
         }
       },
       "System.Xml.XDocument/4.0.11-rc2-24027": {
@@ -273,9 +258,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Xml.XDocument.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       }
     }

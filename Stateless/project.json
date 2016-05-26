@@ -1,17 +1,18 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "3.0.0-*",
   "packOptions": {
-    "summary": "Create state machines and lightweight state machine-based workflows directly in .NET code",
-    "tags": [ "statemachine" ],
-    "requireLicenseAcceptance": false,
-    "owners": [ "Mephistofeles" ],
     "iconUrl": "https://raw.githubusercontent.com/Mephistofeles/stateless/master/logo.png",
-    "projectUrl": "https://github.com/Mephistofeles/stateless",
     "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+    "owners": [ "Mephistofeles" ],
+    "projectUrl": "https://github.com/Mephistofeles/stateless",
+    "releaseNotes": "Updated package to target .NET Platform Standard 1.0",
     "repository": {
       "type": "git",
       "url": "https://github.com/Mephistofeles/stateless.git"
-    }
+    },
+    "requireLicenseAcceptance": false,
+    "summary": "Create state machines and lightweight state machine-based workflows directly in .NET code",
+    "tags": [ "statemachine" ]
   },
   "authors": [ "Nicholas Blumhardt and Contributors" ],
 
@@ -20,8 +21,6 @@
   },
 
   "frameworks": {
-    "netstandard1.0": {
-      "imports": "dnxcore50"
-    }
+    "netstandard1.0": {}
   }
 }
