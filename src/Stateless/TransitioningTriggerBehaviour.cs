@@ -6,9 +6,7 @@ namespace Stateless
     {
         internal class TransitioningTriggerBehaviour : TriggerBehaviour
         {
-            readonly TState _destination;
-
-            internal TState Destination { get { return _destination; } }
+            internal TState Destination { get; }
 
             public TransitioningTriggerBehaviour(TTrigger trigger, TState destination, Func<bool> guard)
                 : this(trigger, destination, guard, string.Empty)
@@ -18,12 +16,12 @@ namespace Stateless
             public TransitioningTriggerBehaviour(TTrigger trigger, TState destination, Func<bool> guard, string description)
                 : base(trigger, guard, description)
             {
-                _destination = destination;
+                Destination = destination;
             }
 
             public override bool ResultsInTransitionFrom(TState source, object[] args, out TState destination)
             {
-                destination = _destination;
+                destination = Destination;
                 return true;
             }
         }

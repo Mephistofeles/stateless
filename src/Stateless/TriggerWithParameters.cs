@@ -9,26 +9,25 @@ namespace Stateless
         /// </summary>
         public abstract class TriggerWithParameters
         {
-            readonly TTrigger _underlyingTrigger;
-            readonly Type[] _argumentTypes;
+            private readonly Type[] _argumentTypes;
 
             /// <summary>
             /// Create a configured trigger.
             /// </summary>
             /// <param name="underlyingTrigger">Trigger represented by this trigger configuration.</param>
             /// <param name="argumentTypes">The argument types expected by the trigger.</param>
-            public TriggerWithParameters(TTrigger underlyingTrigger, params Type[] argumentTypes)
+            protected TriggerWithParameters(TTrigger underlyingTrigger, params Type[] argumentTypes)
             {
                 Enforce.ArgumentNotNull(argumentTypes, "argumentTypes");
 
-                _underlyingTrigger = underlyingTrigger;
+                Trigger = underlyingTrigger;
                 _argumentTypes = argumentTypes;
             }
 
             /// <summary>
             /// Gets the underlying trigger value that has been configured.
             /// </summary>
-            public TTrigger Trigger { get { return _underlyingTrigger; } }
+            public TTrigger Trigger { get; }
 
             /// <summary>
             /// Ensure that the supplied arguments are compatible with those configured for this

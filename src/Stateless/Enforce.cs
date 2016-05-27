@@ -2,7 +2,7 @@
 
 namespace Stateless
 {
-    static class Enforce
+    internal static class Enforce
     {
         public static T ArgumentNotNull<T>(T argument, string description)
             where T : class

@@ -6,28 +6,18 @@ namespace Stateless
     {
         internal abstract class TriggerBehaviour
         {
-            readonly TTrigger _trigger;
-            readonly Func<bool> _guard;
-            readonly string _guardDescription;
-
             protected TriggerBehaviour(TTrigger trigger, Func<bool> guard, string guardDescription)
             {
-                _trigger = trigger;
-                _guard = guard;
-                _guardDescription = Enforce.ArgumentNotNull(guardDescription, nameof(guardDescription));
+                Trigger = trigger;
+                Guard = guard;
+                GuardDescription = Enforce.ArgumentNotNull(guardDescription, nameof(guardDescription));
             }
 
-            public TTrigger Trigger { get { return _trigger; } }
-            internal Func<bool> Guard { get { return _guard; } }
-            internal string GuardDescription{ get { return _guardDescription ; } }
+            public TTrigger Trigger { get; }
+            internal Func<bool> Guard { get; }
+            internal string GuardDescription { get; }
 
-            public bool IsGuardConditionMet
-            {
-                get
-                {
-                    return _guard();
-                }
-            }
+            public bool IsGuardConditionMet => Guard();
 
             public abstract bool ResultsInTransitionFrom(TState source, object[] args, out TState destination);
         }

@@ -12,31 +12,32 @@ namespace Stateless
         /// <returns>A description of all simple source states, triggers and destination states.</returns>
         public string ToDotGraph()
         {
-            List<string> lines = new List<string>();
-            List<string> unknownDestinations = new List<string>();
+            var lines = new List<string>();
+            var unknownDestinations = new List<string>();
 
-            foreach (var stateCfg in _stateConfiguration) 
+            foreach (var stateCfg in _stateConfiguration)
             {
-                TState source = stateCfg.Key;
-                foreach (var behaviours in stateCfg.Value.TriggerBehaviours) 
+                var source = stateCfg.Key;
+                foreach (var behaviours in stateCfg.Value.TriggerBehaviours)
                 {
-                    foreach (TriggerBehaviour behaviour in behaviours.Value) 
+                    foreach (var behaviour in behaviours.Value)
                     {
                         string destination;
 
-                        if (behaviour is TransitioningTriggerBehaviour)
+                        var triggerBehaviour = behaviour as TransitioningTriggerBehaviour;
+                        if (triggerBehaviour != null)
                         {
-                            destination = ((TransitioningTriggerBehaviour)behaviour).Destination.ToString ();
-                        } 
-                        else 
+                            destination = triggerBehaviour.Destination.ToString();
+                        }
+                        else
                         {
                             destination = "unknownDestination_" + unknownDestinations.Count;
                             unknownDestinations.Add(destination);
                         }
 
-                        string line = (behaviour.Guard.GetMethodInfo().DeclaringType.Namespace.Equals("Stateless")) ?
-                            string.Format(" {0} -> {1} [label=\"{2}\"];", source, destination, behaviour.Trigger) :
-                            string.Format(" {0} -> {1} [label=\"{2} [{3}]\"];", source, destination, behaviour.Trigger, behaviour.GuardDescription);
+                        var line = behaviour.Guard.GetMethodInfo().DeclaringType.Namespace.Equals("Stateless") ?
+                            $" {source} -> {destination} [label=\"{behaviour.Trigger}\"];"
+                            : $" {source} -> {destination} [label=\"{behaviour.Trigger} [{behaviour.GuardDescription}]\"];";
 
                         lines.Add(line);
                     }
@@ -45,7 +46,7 @@ namespace Stateless
 
             if (unknownDestinations.Any())
             {
-                string label = string.Format(" {{ node [label=\"?\"] {0} }};", string.Join(" ", unknownDestinations));
+                var label = $" {{ node [label=\"?\"] {string.Join(" ", unknownDestinations)} }};";
                 lines.Insert(0, label);
             }
 
@@ -55,19 +56,13 @@ namespace Stateless
 
                 foreach (var stateCfg in _stateConfiguration)
                 {
-                    TState source = stateCfg.Key;
+                    var source = stateCfg.Key;
 
-                    foreach (var entryActionBehaviour in stateCfg.Value.EntryActions)
-                    {
-                        string line = string.Format(" {0} -> \"{1}\" [label=\"On Entry\" style=dotted];", source, entryActionBehaviour.ActionDescription);
-                        lines.Add(line);
-                    }
+                    lines.AddRange(stateCfg.Value.EntryActions.Select(entryActionBehaviour =>
+                        $" {source} -> \"{entryActionBehaviour.ActionDescription}\" [label=\"On Entry\" style=dotted];"));
 
-                    foreach (var exitActionBehaviour in stateCfg.Value.ExitActions)
-                    {
-                        string line = string.Format(" {0} -> \"{1}\" [label=\"On Exit\" style=dotted];", source, exitActionBehaviour.ActionDescription);
-                        lines.Add(line);
-                    }
+                    lines.AddRange(stateCfg.Value.ExitActions.Select(exitActionBehaviour =>
+                        $" {source} -> \"{exitActionBehaviour.ActionDescription}\" [label=\"On Exit\" style=dotted];"));
                 }
             }
 

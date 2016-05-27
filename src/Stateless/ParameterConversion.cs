@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Stateless
 {
-    static class ParameterConversion
+    internal static class ParameterConversion
     {
         public static object Unpack(object[] args, Type argType, int index)
         {
