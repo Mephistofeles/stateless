@@ -16,7 +16,6 @@ namespace Stateless
         private readonly Func<TState> _stateAccessor;
         private readonly Action<TState> _stateMutator;
         private Action<TState, TTrigger> _unhandledTriggerAction;
-        private event Action<Transition> _onTransitioned;
 
         /// <summary>
         /// Construct a state machine with external state storage.
@@ -46,7 +45,13 @@ namespace Stateless
         private StateMachine()
         {
             _unhandledTriggerAction = DefaultUnhandledTriggerAction;
-        }  
+        }
+
+        /// <summary>
+        /// Occurs when the statemachine
+        /// transitions from one state into another.
+        /// </summary>
+        public event Action<Transition> Transitioned;
 
         /// <summary>
         /// The current state.
@@ -190,7 +195,7 @@ namespace Stateless
 
                 State = transition.Destination;
                 var newRepresentation = GetRepresentation(transition.Destination);
-                _onTransitioned?.Invoke(transition);
+                Transitioned?.Invoke(transition);
 
                 newRepresentation.Enter(transition, args);
             }
@@ -311,18 +316,6 @@ namespace Stateless
                 string.Format(
                     StateMachineResources.NoTransitionsPermitted,
                     trigger, state));
-        }
-
-        /// <summary>
-        /// Registers a callback that will be invoked every time the statemachine
-        /// transitions from one state into another.
-        /// </summary>
-        /// <param name="onTransitionAction">The action to execute, accepting the details
-        /// of the transition.</param>
-        public void OnTransitioned(Action<Transition> onTransitionAction)
-        {
-            if (onTransitionAction == null) throw new ArgumentNullException(nameof(onTransitionAction));
-            _onTransitioned += onTransitionAction;
         }
     }
 }

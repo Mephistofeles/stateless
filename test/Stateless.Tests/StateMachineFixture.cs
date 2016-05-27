@@ -284,7 +284,7 @@ namespace Stateless.Tests
                 .Permit(Trigger.X, State.A);
 
             StateMachine<State, Trigger>.Transition transition = null;
-            sm.OnTransitioned(t => transition = t);
+            sm.Transitioned += t => transition = t;
 
             sm.Fire(Trigger.X);
 
@@ -308,7 +308,7 @@ namespace Stateless.Tests
             sm.Configure(State.A)
                 .OnEntry(() => actualOrdering.Add("OnEntry"));
 
-            sm.OnTransitioned(t => actualOrdering.Add("OnTransitioned"));
+            sm.Transitioned += t => actualOrdering.Add("OnTransitioned");
 
             sm.Fire(Trigger.X);
 
