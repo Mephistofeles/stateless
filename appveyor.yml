@@ -1,23 +1,31 @@
-version: 2.5.{build}
+version: 3.0.{build}
+image: Visual Studio 2015
 branches:
   only:
   - master
-configuration: Release
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}.0'
-  assembly_file_version: '{version}.0'
-  assembly_informational_version: '{version}'
-build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  verbosity: minimal
-after_build:
-- ps: 
+configuration:
+- Debug
+- Release
+platform: Any CPU
+init:
+- ps: $Env:LABEL = "ci-" + $Env:APPVEYOR_BUILD_NUMBER.PadLeft(5, "0")
+environment:
+  PATH: $(PATH);$(PROGRAMFILES)\dotnet\
+build_script:
+- appveyor-retry dotnet restore -v Minimal
+- dotnet build **\project.json -c %CONFIGURATION%
+- dotnet pack -c %CONFIGURATION% --no-build --version-suffix %LABEL% -o .\artifacts .\src\Stateless\project.json
+test_script:
+- dotnet test -c %CONFIGURATION% --no-build .\test\Stateless.Tests
+artifacts:
+- path: artifacts\**\*.*
+cache:
+- '%USERPROFILE%\.nuget\packages'
 deploy:
 - provider: NuGet
+  server: https://www.myget.org/F/mephistofeles/api/v2/package
   api_key:
-    secure: U0b7CQk3G8x+xfzoeGz3o26PyoR4G/DuuJ/G63mMrj+mgrDgV0/JA7/4fqqzO2eH
+    secure: rKdg9RWD7BaTopTo6HPIQaVX2/DaQ2MuyXhFOeXpO6z8QZtwJAW8VhC5yu+0aJKT
+  symbol_server: https://nuget.symbolsource.org/MyGet/mephistofeles
   on:
     branch: master
